@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="users.css">
+    <title>Admin - User Management</title>
+    <style>
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        .modal-content button {
+            margin-top: 10px;
+            padding: 10px;
+        }
+
+        .modal-content button:hover {
+            background-color: #ddd;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="admin">
+        <nav>
+            <img class="icon" src="LOGO.png" alt="">
+            <label class="logo">Corn Registry System</label>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="admin.html">Back to Admin Dashboard</a></li>
+            </ul>
+        </nav>
+
+        <div class="admin-box">
+            <h1>User Management</h1>
+            <input type="text" id="searchInput" placeholder="Search users..." onkeyup="searchUsers()" />
+
+            <table id="userTable">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="selectAll" onclick="selectAllUsers()" /></th>
+                        <th><button onclick="sortTable('name')">Name</button></th>
+                        <th><button onclick="sortTable('rsbaNumber')">RSBA Number</button></th>
+                        <th><button onclick="sortTable('farmLocation')">Farm Location</button></th>
+                        <th><button onclick="sortTable('farmSize')">Farm Size</button></th>
+                        <th><button onclick="sortTable('status')">Status</button></th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+
+            <button onclick="approveSelected()">Approve</button>
+            <button onclick="denySelected()">Deny</button>
+        </div>
+    </section>
+
+    <!-- Modal for Denial Confirmation -->
+    <div id="denyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Are you sure you want to deny this user?</h2>
+            <button id="confirmDenyBtn" onclick="denyConfirmed()">Deny</button>
+            <button onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        let userIdToDeny = null; 
+
+   
+        function renderTable() {
+            const tableBody = document.querySelector('#userTable tbody');
+            tableBody.innerHTML = ''; 
+
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><input type="checkbox" class="userCheckbox" data-id="${user.id}" /></td>
+                    <td>${user.firstName} ${user.lastName}</td>
+                    <td>${user.rsbaNumber}</td>
+                    <td>${user.farmLocation}</td>
+                    <td>${user.farmSize} hectares</td>
+                            <td>${user.status}</td>
+                            <td>
+                                <button onclick="approveUser(${user.id})">Approve</button>
+                                <button onclick="confirmDenyUser(${user.id})">Deny</button>
+                            </td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                }
+
+                function searchUsers() {
+                    const input = document.getElementById('searchInput');
+                    const filter = input.value.toLowerCase();
+                    const rows = document.querySelectorAll('#userTable tbody tr');
+                    rows.forEach(row => {
+                        const cells = row.getElementsByTagName('td');
+                        const name = cells[1].textContent.toLowerCase();
+                        const rsbaNumber = cells[2].textContent.toLowerCase();
+                        if (name.includes(filter) || rsbaNumber.includes(filter)) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                }
+
+                function selectAllUsers() {
+                    const selectAllCheckbox = document.getElementById('selectAll');
+                    const userCheckboxes = document.querySelectorAll('.userCheckbox');
+                    userCheckboxes.forEach(checkbox => {
+                        checkbox.checked = selectAllCheckbox.checked;
+                    });
+                }
+
+                function approveUser(userId) {
+                    const user = users.find(u => u.id === userId);
+                    if (user) {
+                        user.status = 'Approved';
+                        localStorage.setItem('users', JSON.stringify(users)); 
+                        renderTable(); 
+                    }
+                }
+
+                function confirmDenyUser(userId) {
+                    userIdToDeny = userId; 
+                    showModal(); 
+                }
+
+                function denyConfirmed() {
+                    const user = users.find(u => u.id === userIdToDeny);
+                    if (user) {
+                        user.status = 'Denied';
+                        localStorage.setItem('users', JSON.stringify(users)); 
+                        renderTable();
+                    }
+                    closeModal(); 
+                }
+
+                function closeModal() {
+                    document.getElementById('denyModal').style.display = 'none';
+                }
+
+                function showModal() {
+                    document.getElementById('denyModal').style.display = 'block';
+                }
+
+                function denyUser(userId) {
+                    const user = users.find(u => u.id === userId);
+                    if (user) {
+                        user.status = 'Denied';
+                        localStorage.setItem('users', JSON.stringify(users)); 
+                        renderTable(); 
+                    }
+                }
+
+                function approveSelected() {
+                    const selectedIds = getSelectedUserIds();
+                    selectedIds.forEach(id => {
+                        const user = users.find(u => u.id === id);
+                        if (user) {
+                            user.status = 'Approved';
+                        }
+                    });
+                    localStorage.setItem('users', JSON.stringify(users)); 
+                    renderTable();
+                }
+
+                function denySelected() {
+                    const selectedIds = getSelectedUserIds();
+                    selectedIds.forEach(id => {
+                        const user = users.find(u => u.id === id);
+                        if (user) {
+                            user.status = 'Denied';
+                        }
+                    });
+                    localStorage.setItem('users', JSON.stringify(users));
+                    renderTable();
+                }
+
+                function getSelectedUserIds() {
+                    const selectedCheckboxes = document.querySelectorAll('.userCheckbox:checked');
+                    return Array.from(selectedCheckboxes).map(checkbox => parseInt(checkbox.dataset.id));
+                }
+
+                function sortTable(column) {
+                    const sortedUsers = [...users];
+                    switch (column) {
+                        case 'name':
+                            sortedUsers.sort((a, b) => `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`));
+                            break;
+                        case 'rsbaNumber':
+                            sortedUsers.sort((a, b) => a.rsbaNumber.localeCompare(b.rsbaNumber));
+                            break;
+                        case 'farmLocation':
+                            sortedUsers.sort((a, b) => a.farmLocation.localeCompare(b.farmLocation));
+                            break;
+                        case 'farmSize':
+                            sortedUsers.sort((a, b) => a.farmSize - b.farmSize);
+                            break;
+                        case 'status':
+                            sortedUsers.sort((a, b) => a.status.localeCompare(b.status));
+                            break;
+                        default:
+                            break;
+                    }
+                    users = sortedUsers; 
+                    localStorage.setItem('users', JSON.stringify(users)); 
+                    renderTable(); 
+                }
+
+                renderTable();
+            </script>
+</body>
+
+</html>

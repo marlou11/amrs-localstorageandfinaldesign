@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<!---Coding By CodingLab | www.codinglabweb.com--->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="Form.css" />
+    <style>
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      .box {
+        border: 1px solid #ccc;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+      }
+      .box h2 {
+        margin-bottom: 10px;
+        font-size: 1.5em;
+      }
+      .box input, .box select {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+      .box button {
+        padding: 10px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .box a {
+        display: block;
+        margin-top: 10px;
+        color: hsl(123, 81%, 29%);
+        text-decoration: none;
+      }
+      .box a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="container">
+      <header>Welcome to Corn Registry System</header>
+
+      <!-- Farmer's Profile Box -->
+      <div class="box">
+        <h2>Farmer's Profile</h2>
+        <div class="input-box">
+          <label>Full Name</label>
+          <input type="text" name="fullName" placeholder="Enter full name" required />
+        </div>
+        <div class="input-box">
+          <label>Home Address</label>
+          <input type="text" name="homeAddress" placeholder="Enter home address" required />
+        </div>
+        <div class="input-box">
+          <label>RSBA Number</label>
+          <input type="text" name="rsbaNumber" placeholder="Enter RSBA number" required />
+        </div>
+        <div class="input-box">
+          <label>Phone Number</label>
+          <input type="tel" name="phoneNumber" placeholder="Enter phone number" required />
+        </div>
+
+        <!-- CRUD Options -->
+        <div class="input-box">
+          <label>Actions:</label>
+          <button type="button">Create</button>
+          <button type="button">Read</button>
+          <button type="button">Update</button>
+          <button type="button">Delete</button>
+        </div>
+
+        <!-- Send Message Link -->
+        <a href="sendMessageForm.html">Send Message to Farmer</a>
+      </div>
+
+      <!-- Cash Assistance Box -->
+      <div class="box">
+        <h2>Cash Assistance</h2>
+        <div class="input-box">
+          <label>Amount</label>
+          <input type="number" name="cashAssistanceAmount" placeholder="Enter amount" required />
+        </div>
+        <div class="input-box">
+          <label>Date of Distribution</label>
+          <input type="date" name="cashAssistanceDate" required />
+        </div>
+      </div>
+
+      <!-- Seedlings Distribution Box -->
+      <div class="box">
+        <h2>Seedlings Distribution</h2>
+        <div class="input-box">
+          <label>Seedling Type</label>
+          <input type="text" name="seedlingsType" placeholder="Enter seedling type" required />
+        </div>
+        <div class="input-box">
+          <label>Date of Distribution</label>
+          <input type="date" name="seedlingsDate" required />
+        </div>
+      </div>
+
+      <!-- Farm Equipment Subsidy Box -->
+      <div class="box">
+        <h2>Farm Equipment Subsidy</h2>
+        <div class="input-box">
+          <label>Equipment Type</label>
+          <input type="text" name="equipmentType" placeholder="Enter equipment type" required />
+        </div>
+        <div class="input-box">
+          <label>Date of Distribution</label>
+          <input type="date" name="equipmentDate" required />
+        </div>
+      </div>
+
+      <!-- Fertilizer Assistance Box -->
+      <div class="box">
+        <h2>Fertilizer Assistance</h2>
+        <div class="input-box">
+          <label>Fertilizer Type</label>
+          <input type="text" name="fertilizerType" placeholder="Enter fertilizer type" required />
+        </div>
+        <div class="input-box">
+          <label>Date of Distribution</label>
+          <input type="date" name="fertilizerDate" required />
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="box">
+        <button type="submit">Submit All Data</button>
+      </div>
+    </section>
+  </body>
+</html>

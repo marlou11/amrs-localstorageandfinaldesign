@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!---Coding By CodingLab | www.codinglabweb.com--->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!--<title>Registration Form in HTML CSS</title>-->
+    <!---Custom CSS File--->
+    <link rel="stylesheet" href="Form.css" />
+  </head>
+  <body>
+    <section class="container">
+      <header>Welcome to Corn Registry System</header>
+      <form class="form" action="https://formsubmit.co/54281c5ee34a595c21228e70f9ec1ab0" method="POST">
+        <div class="input-box">
+          <label>Full Name</label>
+          <input type="text" placeholder="Enter full name" required />
+        </div>
+
+        <div class="input-box">
+          <label>Home Address</label>
+          <select name="homeAddress" required>
+            <option value="" disabled selected>Select your home address</option>
+            <option value="Balacanas">Balacanas</option>
+            <option value="Dayawan">Dayawan</option>
+            <option value="Imelda">Imelda</option>
+            <option value="Katipunan">Katipunan</option>
+            <option value="Kimaya">Kimaya</option>
+            <option value="Looc">Looc</option>
+            <option value="Poblacion 1">Poblacion 1</option>
+            <option value="Poblacion 2">Poblacion 2</option>
+            <option value="Poblacion 3">Poblacion 3</option>
+            <option value="San Martin">San Martin</option>
+            <option value="Tambobong">Tambobong</option>
+          </select>
+        </div>
+
+        <div class="column">
+          <div class="input-box">
+            <label>RSBA Number</label>
+            <input type="tel" placeholder="Enter your RSBA number" pattern="[0-9]{10,}" required title="RSBA number should be numeric and at least 10 digits." />
+          </div>
+        </div>
+
+        <button type="submit">Submit</button>
+      </form>
+    </section>
+  </body>
+</html>
